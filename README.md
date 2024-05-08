@@ -80,24 +80,32 @@ This will create a new file in `$HOME/.gmux/<name>`.
 
 #### Root Level ####
 
-| Name          | Type      | Description                                        |
-|:--------------|:----------|:---------------------------------------------------|
-| Name          | string    | The name of your tmux session                      |
-| Root          | string    | The working directory for your tmux session        |
-| PreWindow     | string    | A command you want run at the start of each window |
-| StartupWindow | string    | The window to focus on after session creation      |
-| StartupPane   | number    | The pane to focus on (starts from 0)               |
-| Windows       | []Windows | An array of configurations for each window         |
+| Name          | Type     | Description                                        |
+|:--------------|:---------|:---------------------------------------------------|
+| Name          | string   | The name of your tmux session                      |
+| Root          | string   | The working directory for your tmux session        |
+| PreWindow     | string   | A command you want run at the start of each window |
+| StartupWindow | string   | The window to focus on after session creation      |
+| StartupPane   | number   | The pane to focus on (starts from 0)               |
+| Windows       | []Window | An array of configurations for each window         |
 
 
 #### Window Object ####
 
-| Name   | Type     | Desc                                          |
-|:-------|:---------|:----------------------------------------------|
-| Name   | string   | The name of the window                        |
-| Root   | string   | The working directory for your window         |
-| Layout | string   | The way you want the panes to be laid out     |
-| Panes  | []string | List of commands you want to run in each pane |
+| Name   | Type   | Desc                                          |
+|:-------|:-------|:----------------------------------------------|
+| Name   | string | The name of the window                        |
+| Root   | string | The working directory for your window         |
+| Layout | string | The way you want the panes to be laid out     |
+| Panes  | []Pane | An array of configurations for each pane      |
+
+
+#### Pane Object ####
+
+| Name      | Type     | Desc                                          |
+|:----------|:---------|:----------------------------------------------|
+| Name      | string   | The name of the pane                          |
+| Commands  | []string | List of commands you want to run in each pane |
 
 
 ## About

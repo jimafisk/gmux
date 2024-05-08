@@ -79,9 +79,15 @@ type Config struct {
 // Window represents the configration for a tmux window
 type Window struct {
 	Name   string
-	Layout string   `json:",omitempty"`
-	Root   string   `json:",omitempty"`
-	Panes  []string `json:",omitempty"`
+	Layout string  `json:",omitempty"`
+	Root   string  `json:",omitempty"`
+	Panes  []*Pane `json:",omitempty"`
+}
+
+// Pane represents the configration for a tmux pane
+type Pane struct {
+	Name     string
+	Commands []string `json:",omitempty"`
 }
 
 // Config Methods -------------------------------------------------------------
@@ -143,9 +149,12 @@ func (c *Config) Exec(debug bool) error {
 				cc.Add("tmux", "send-keys", "-t", paneID, c.PreWindow, "Enter")
 			}
 
-			// execute the command for a particular pane if it is provided
-			if p != "" {
-				cc.Add("tmux", "send-keys", "-t", paneID, p, "Enter")
+			for _, cmd := range p.Commands {
+				// execute the command for a particular pane if it is provided
+				if cmd != "" {
+					cc.Add("tmux", "send-keys", "-t", paneID, cmd, "Enter")
+				}
+
 			}
 		}
 
@@ -205,22 +214,37 @@ func New(configName string) *Config {
 	config.Windows[0] = &Window{
 		Name:   "editor",
 		Layout: "main-vertical",
-		Panes: []string{
+		Panes:  make([]*Pane, 1),
+	}
+
+	config.Windows[0].Panes[0] = &Pane{
+		Name: "vim",
+		Commands: []string{
 			"vim",
 			"guard",
 		},
 	}
 
 	config.Windows[1] = &Window{
-		Name: "server",
-		Panes: []string{
+		Name:  "server",
+		Panes: make([]*Pane, 1),
+	}
+
+	config.Windows[1].Panes[0] = &Pane{
+		Name: "rails",
+		Commands: []string{
 			"bundle exec rails s",
 		},
 	}
 
 	config.Windows[2] = &Window{
-		Name: "logs",
-		Panes: []string{
+		Name:  "logs",
+		Panes: make([]*Pane, 1),
+	}
+
+	config.Windows[2].Panes[0] = &Pane{
+		Name: "tail",
+		Commands: []string{
 			"tail -f log/development.log",
 		},
 	}
